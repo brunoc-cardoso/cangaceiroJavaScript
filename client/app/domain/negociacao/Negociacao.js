@@ -6,7 +6,7 @@ class Negociacao {
         Object.freeze(this);
     }
 
-    getVolume() {
+    get volume() {
         return this._quantidade * this._valor;
     }
 
