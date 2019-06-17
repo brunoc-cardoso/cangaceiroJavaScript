@@ -20,7 +20,7 @@ class NegociacaoController {
       'texto'
     );
 
-    this.service = new NegociacaoService();
+    this._service = new NegociacaoService();
   }
 
   adiciona(event) {
@@ -60,15 +60,12 @@ class NegociacaoController {
   }
 
   importaNegociacoes() {
-    this.service.obterNegociacaoDaSemana((err, negociacoes) => {
-      if (err) {
-        this._mensagem.texto = "Não foi possível obter as negociações da semana";
-        return;
-      }
-      negociacoes.forEach(negociacao => {
-        this._negociacoes.adiciona(negociacao);
-        this._mensagem.texto = "Negociação importadas com sucesso";
-      });
-    });
+    this._service.obterNegociacaoDaSemana()
+      .then(negociacoes => {
+        negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
+        this._mensagem.texto = "Negociações importadas com sucesso";
+      },
+        err => this._mensagem.texto = err
+      );
   }
 }
