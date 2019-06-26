@@ -51,4 +51,19 @@ class NegociacaoService {
       );
   }
 
+  obtemNegociacaoDoPeriodo() {
+    return Promise.all([
+      this.obtemNegociacaoDaSemana(),
+      this.obtemNegociacoesDaSemanaAnterior(),
+      this.obtemNegociacoesDaSemanaRetrasada()
+    ])
+    .then(periodo => {
+      return periodo.reduce((novoArray, item) => novoArray.concat(item), []);
+    })
+    .catch(err => {
+      console.log(err);
+      throw new Error('Não foi possível obter as negociações do período');
+    });
+  }
+
 }
