@@ -78,6 +78,12 @@ class NegociacaoController {
         negociacoes.push(...anterior);
         negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
         this._mensagem.texto = "Negociações importadas com sucesso";
-      }).catch(err => this._mensagem.texto = err);
+      }).catch(err => this._mensagem.texto = err)
+      .then(retrasada => {
+        negociacoes.push(...retrasada);
+        negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
+        this._mensagem.texto = 'Negociações importadas com sucesso';
+      })
+      .catch(err => this._mensagem.texto - err);
   }
 }
