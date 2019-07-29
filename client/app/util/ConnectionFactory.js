@@ -13,18 +13,26 @@ class ConnectionFactory {
       const openRequest = indexedDB.open('jscangaceiro', 2);
 
       openRequest.onupgradeneeded = e => {
-        stores.forEach(store => {
-          // lógica que cria as stores
-        });
+        ConnectionFactory._createStores(e.target.result);
       };
 
       openRequest.onsuccess = e => {
-
+        resolve(e.target.result);
       };
 
       openRequest.onerror = e => {
-
+        console.log(e.target.error);
+        reject(e.target.error.name);
       };
+    });
+  }
+
+  static _createStores(connection) {
+    stores.forEach(store => {
+      if (connection.objectStoreNames.contains(store))
+        connection.deleteObjectStore(store);
+
+      connection.createObjectStore(store, { autoIncrement: true });
     });
   }
 
